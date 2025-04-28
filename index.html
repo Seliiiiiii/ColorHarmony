@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Funnel+Sans:ital,wght@0,300..800;1,300..800&family=Matemasie&display=swap"
+      rel="stylesheet"
+    />
+    <title>Color Harmony</title>
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <nav>
+      <div>
+        <h2>Color Harmony</h2>
+      </div>
+    </nav>
+    <header>
+      <h1>Find your colors with <span>Color Harmony</span></h1>
+      <a href="#color-section" class="button">get started</a>
+    </header>
+    <section class="info">
+      <div class="info-box">
+        <img src="img/cross.svg" alt="" class="cross-info" />
+        <p>press space to generate</p>
+      </div>
+    </section>
+
+    <section class="color-section" id="color-section">
+      <div>
+        <div class="harmonies">
+          <a class="random harmony button">random</a>
+          <a class="complementary harmony button">complementary</a>
+          <a class="triadic harmony button">triadic</a>
+          <a class="tetradic harmony button">tetradic</a>
+          <a class="monochromatic harmony button">monochromatic</a>
+          <a class="split-complementary harmony button">split complementary</a>
+          <a class="analogous harmony button">analogous</a>
+        </div>
+        <div class="colors">
+          <div class="color-box1 color-box">
+            <input type="color" class="color color1 harmony-active" />
+            <p class="color-name color-name1">Hexa</p>
+          </div>
+          <div class="color-box2 color-box">
+            <input type="color" class="color color2" />
+            <p class="color-name color-name2">Hexa</p>
+          </div>
+          <div class="color-box3 color-box">
+            <input type="color" class="color color3" />
+            <p class="color-name color-name3">Hexa</p>
+          </div>
+          <div class="color-box4 color-box">
+            <input type="color" class="color color4" />
+            <p class="color-name color-name4">Hexa</p>
+          </div>
+          <div class="color-box5 color-box">
+            <input type="color" class="color color5" />
+            <p class="color-name color-name5">Hexa</p>
+          </div>
+        </div>
+      </div>
+    </section>
+    <footer>
+      <h2>&copy;Color Harmony</h2>
+      <div>
+        <a href="#"> <h2>Datenschutz</h2></a>
+        <a href="#"><h2>Impressum</h2></a>
+      </div>
+    </footer>
+    <script src="script.js"></script>
+  </body>
+</html>
