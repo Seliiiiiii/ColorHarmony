@@ -128,6 +128,9 @@ document.addEventListener("keydown", (x) => {
 // AUSWAHL VON HARMONY
 harmonies.forEach((harmony) => {
   harmony.addEventListener("click", () => {
+    harmonies.forEach((item) => item.classList.remove("harmony-active"));
+    harmony.classList.add("harmony-active");
+
     if (
       harmony.classList.contains("complementary") ||
       harmony.classList.contains("triadic") ||
