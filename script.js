@@ -15,42 +15,75 @@ const splitComplementary = document.querySelector(".split-complementary");
 const analogous = document.querySelector(".analogous");
 
 const colors = document.querySelector(".colors");
-let color = document.querySelectorAll(".color");
 
-const color1 = document.querySelector(".color1");
-const color2 = document.querySelector(".color2");
-const color3 = document.querySelector(".color3");
-const color4 = document.querySelector(".color4");
-const color5 = document.querySelector(".color5");
+let colorInputs = [
+  document.querySelector(".color1"),
+  document.querySelector(".color2"),
+  document.querySelector(".color3"),
+  document.querySelector(".color4"),
+  document.querySelector(".color5"),
+];
 
-const hexas = document.querySelectorAll(".color-name");
+let hexas = [
+  document.querySelector(".color-name1"),
+  document.querySelector(".color-name2"),
+  document.querySelector(".color-name3"),
+  document.querySelector(".color-name4"),
+  document.querySelector(".color-name5"),
+];
 
-const hexa1 = document.querySelector(".color-name1");
-const hexa2 = document.querySelector(".color-name2");
-const hexa3 = document.querySelector(".color-name3");
-const hexa4 = document.querySelector(".color-name4");
-const hexa5 = document.querySelector(".color-name5");
+let boxes = [
+  document.querySelector(".color-box1"),
+  document.querySelector(".color-box2"),
+  document.querySelector(".color-box3"),
+  document.querySelector(".color-box4"),
+  document.querySelector(".color-box5"),
+];
 
-let colorBox1 = document.querySelector(".color-box1");
-let colorBox2 = document.querySelector(".color-box2");
-let colorBox3 = document.querySelector(".color-box3");
-let colorBox4 = document.querySelector(".color-box4");
-let colorBox5 = document.querySelector(".color-box5");
+const box1 = document.querySelector(".color-box1");
+const box2 = document.querySelector(".color-box2");
+const box3 = document.querySelector(".color-box3");
+const box4 = document.querySelector(".color-box4");
+const box5 = document.querySelector(".color-box5");
+
+let locks = [
+  document.querySelector(".schloss-1"),
+  document.querySelector(".schloss-2"),
+  document.querySelector(".schloss-3"),
+  document.querySelector(".schloss-4"),
+  document.querySelector(".schloss-5"),
+];
+
+let isLocked = [false, false, false, false, false];
+
+// HEADER
+const header = document.querySelector("header");
+const h1Titel = document.querySelector("h1");
+const h1Span = document.querySelector(".focus-span");
+const button = document.querySelector(".button-start");
+
+setInterval(() => {
+  const homeColor = getRandomColor();
+  header.style.backgroundColor = homeColor;
+  button.style.backgroundColor = header.style.backgroundColor;
+  button.style.color = createComplementary(homeColor);
+  const shadowColor = createMonocromatic(homeColor, 4);
+  button.style.boxShadow = `0 2px 8px 1px ${shadowColor}`;
+  h1Titel.style.color = createMonocromatic(homeColor, 4);
+  h1Span.style.color = createComplementary(homeColor);
+}, 3000);
 
 // HEXA ANZEIGEN
 function fillHexa() {
-  for (let i = 1; i <= 5; i++) {
-    document.querySelector(`.color-name${i}`).innerText =
-      document.querySelector(`.color${i}`).value;
+  for (let i = 0; i < 5; i++) {
+    hexas[i].innerText = colorInputs[i].value;
   }
 }
 
 // HEXA KOPIEREN
-
 function copyHexa() {
-  const hexas = [hexa1, hexa2, hexa3, hexa4, hexa5];
-
   hexas.forEach((colorElement, index) => {
+    if (colorElement.dataset.listenerAttached === "true") return;
     colorElement.setAttribute("title", `Copy ${hexas[index].textContent}`);
     colorElement.addEventListener("click", () => {
       navigator.clipboard
@@ -58,6 +91,7 @@ function copyHexa() {
         .then(() => alert(`Copied: ${hexas[index].textContent}`))
         .catch((err) => alert("Copy failed", err));
     });
+    colorElement.dataset.listenerAttached = "true";
   });
 }
 
@@ -66,20 +100,17 @@ copyHexa();
 // FARBE FÜR START
 function getRandomColor() {
   const letters = "0123456789ABCDEF";
-  let colorMath = "#";
+  let colorInputs = "#";
   for (let i = 0; i < 6; i++) {
-    colorMath += letters[Math.floor(Math.random() * 16)];
+    colorInputs += letters[Math.floor(Math.random() * 16)];
   }
-  return colorMath;
+  return colorInputs;
 }
 
 // FARBE FÜR START BEI SPACE
 document.addEventListener("keydown", (x) => {
   if (x.code === "Space") {
     x.preventDefault();
-
-    const randomColor = getRandomColor();
-    color1.value = randomColor;
 
     random2();
     updateComplementary1();
@@ -100,34 +131,26 @@ harmonies.forEach((harmony) => {
     harmonies.forEach((item) => item.classList.remove("harmony-active"));
     harmony.classList.add("harmony-active");
 
-    const randomColor = getRandomColor();
-    color1.value = randomColor;
+    if (!colors.contains(box3)) colors.appendChild(box3);
+    if (!colors.contains(box4)) colors.appendChild(box4);
+    if (!colors.contains(box5)) colors.appendChild(box5);
 
     if (harmony.classList.contains("complementary")) {
-      colorBox3.remove();
-    } else {
-      if (!colors.contains(colorBox3)) colors.appendChild(colorBox3);
+      if (colors.contains(box3)) colors.removeChild(box3);
+      if (colors.contains(box4)) colors.removeChild(box4);
+      if (colors.contains(box5)) colors.removeChild(box5);
     }
 
     if (
-      harmony.classList.contains("complementary") ||
       harmony.classList.contains("triadic") ||
       harmony.classList.contains("split-complementary")
     ) {
-      colorBox4.remove();
-    } else {
-      if (!colors.contains(colorBox4)) colors.appendChild(colorBox4);
+      if (colors.contains(box4)) colors.removeChild(box4);
+      if (colors.contains(box5)) colors.removeChild(box5);
     }
 
-    if (
-      harmony.classList.contains("complementary") ||
-      harmony.classList.contains("triadic") ||
-      harmony.classList.contains("tetradic") ||
-      harmony.classList.contains("split-complementary")
-    ) {
-      colorBox5.remove();
-    } else {
-      if (!colors.contains(colorBox5)) colors.appendChild(colorBox5);
+    if (harmony.classList.contains("tetradic")) {
+      if (colors.contains(box5)) colors.removeChild(box5);
     }
 
     random2();
@@ -144,7 +167,7 @@ harmonies.forEach((harmony) => {
 });
 
 // UPDATE COLORS
-color1.addEventListener("input", function () {
+colorInputs[0].addEventListener("input", function () {
   updateComplementary1();
   updateMonochromatic();
   updateTriadic();
@@ -154,7 +177,7 @@ color1.addEventListener("input", function () {
   fillHexa();
 });
 
-color2.addEventListener("input", function () {
+colorInputs[1].addEventListener("input", function () {
   updateComplementary2();
   updateMonochromatic();
   updateTriadic();
@@ -164,7 +187,7 @@ color2.addEventListener("input", function () {
   fillHexa();
 });
 
-color3.addEventListener("input", function () {
+colorInputs[2].addEventListener("input", function () {
   updateMonochromatic();
   updateTriadic();
   updateTetradic();
@@ -173,14 +196,14 @@ color3.addEventListener("input", function () {
   fillHexa();
 });
 
-color4.addEventListener("input", function () {
+colorInputs[3].addEventListener("input", function () {
   updateMonochromatic();
   updateTetradic();
   updateAnalogous();
   fillHexa();
 });
 
-color5.addEventListener("input", function () {
+colorInputs[4].addEventListener("input", function () {
   updateMonochromatic();
   updateAnalogous();
   fillHexa();
@@ -286,13 +309,17 @@ function hslToHex(hsl) {
 
 // ALLGEMEIN
 let isUpdating = false;
+lockToggler();
 
 // RANDOM
+
 function random2() {
-  color2.value = getRandomColor();
-  color3.value = getRandomColor();
-  color4.value = getRandomColor();
-  color5.value = getRandomColor();
+  colorInputs.forEach((input, index) => {
+    if (!isLocked[index]) {
+      const randomHex = getRandomColor();
+      input.value = randomHex;
+    }
+  });
 }
 
 //COMPLEMENTARY
@@ -308,7 +335,7 @@ function updateComplementary1() {
   isUpdating = false;
   if (!complementary.classList.contains("harmony-active")) return;
   isUpdating = true;
-  color2.value = createComplementary(color1.value);
+  colorInputs[1].value = createComplementary(colorInputs[0].value);
   isUpdating = false;
 }
 
@@ -316,7 +343,7 @@ function updateComplementary2() {
   isUpdating = false;
   if (!complementary.classList.contains("harmony-active")) return;
   isUpdating = true;
-  color1.value = createComplementary(color2.value);
+  colorInputs[0].value = createComplementary(colorInputs[1].value);
   isUpdating = false;
 }
 
@@ -330,16 +357,16 @@ function createTriadic(hex) {
   return [hslToHex({ h: h1, s: s, l: l }), hslToHex({ h: h2, s: s, l: l })];
 }
 
-createTriadic(color1.value);
+createTriadic(colorInputs[0].value);
 
 isUpdating = false;
 
 function updateTriadic() {
   const isActive = document.querySelector(".triadic.harmony-active");
   if (isActive) {
-    const [triadic1, triadic2] = createTriadic(color1.value);
-    color2.value = triadic1;
-    color3.value = triadic2;
+    const [triadic1, triadic2] = createTriadic(colorInputs[0].value);
+    colorInputs[1].value = triadic1;
+    colorInputs[2].value = triadic2;
   }
 }
 
@@ -361,11 +388,11 @@ function createTetradic(hex) {
 function updateTetradic() {
   const isActive = document.querySelector(".tetradic.harmony-active");
   if (isActive) {
-    const [c1, c2, c3, c4] = createTetradic(color1.value);
-    color1.value = c1;
-    color2.value = c2;
-    color3.value = c3;
-    color4.value = c4;
+    const [c1, c2, c3, c4] = createTetradic(colorInputs[0].value);
+    colorInputs[0].value = c1;
+    colorInputs[1].value = c2;
+    colorInputs[2].value = c3;
+    colorInputs[3].value = c4;
   }
 }
 
@@ -376,8 +403,8 @@ function createMonocromatic(hex, level) {
   let g = parseInt(hexClean.substring(2, 4), 16);
   let b = parseInt(hexClean.substring(4, 6), 16);
 
-  function adjustColor(color, factor) {
-    return Math.min(Math.max(0, color + factor), 255);
+  function adjustColor(colorInputs, factor) {
+    return Math.min(Math.max(0, colorInputs + factor), 255);
   }
 
   const factor = 25 * level;
@@ -398,10 +425,10 @@ function updateMonochromatic() {
   const isActive = monochromatic.classList.contains("harmony-active");
   if (isActive) {
     isUpdating = true;
-    color2.value = createMonocromatic(color1.value, 1);
-    color3.value = createMonocromatic(color1.value, 2);
-    color4.value = createMonocromatic(color1.value, 3);
-    color5.value = createMonocromatic(color1.value, 4);
+    colorInputs[1].value = createMonocromatic(colorInputs[0].value, 1);
+    colorInputs[2].value = createMonocromatic(colorInputs[0].value, 2);
+    colorInputs[3].value = createMonocromatic(colorInputs[0].value, 3);
+    colorInputs[4].value = createMonocromatic(colorInputs[0].value, 4);
     isUpdating = false;
   }
 }
@@ -412,9 +439,11 @@ function updateSplitComplementary() {
     ".split-complementary.harmony-active"
   );
   if (isActive) {
-    const [splitComp1, splitComp2] = createSplitComplementary(color1.value);
-    color2.value = splitComp1;
-    color3.value = splitComp2;
+    const [splitComp1, splitComp2] = createSplitComplementary(
+      colorInputs[0].value
+    );
+    colorInputs[1].value = splitComp1;
+    colorInputs[2].value = splitComp2;
   }
 }
 updateSplitComplementary();
@@ -425,10 +454,10 @@ function createSplitComplementary(hex) {
   const h1 = (h + 160) % 360;
   const h2 = (h + 200) % 360;
 
-  const color1 = hslToHex({ h: h1, s, l });
-  const color2 = hslToHex({ h: h2, s, l });
+  const split1 = hslToHex({ h: h1, s, l });
+  const split2 = hslToHex({ h: h2, s, l });
 
-  return [color1, color2];
+  return [split1, split2];
 }
 
 // ANALOGOUS
@@ -440,11 +469,11 @@ function updateAnalogous() {
   if (isActive) {
     isUpdating = true;
 
-    const [c2, c3, c4, c5] = createAnalogous(color1.value, 20);
-    color2.value = c2;
-    color3.value = c3;
-    color4.value = c4;
-    color5.value = c5;
+    const [c2, c3, c4, c5] = createAnalogous(colorInputs[0].value, 20);
+    colorInputs[1].value = c2;
+    colorInputs[2].value = c3;
+    colorInputs[3].value = c4;
+    colorInputs[4].value = c5;
 
     isUpdating = false;
   }
@@ -452,10 +481,48 @@ function updateAnalogous() {
 
 function createAnalogous(hex, angleShift) {
   const [h, s, l] = hexToHSL(hex);
-
   const offsets = [1, 2, 3, 4];
   return offsets.map((offset) => {
     const newH = (h + offset * angleShift + 360) % 360;
     return hslToHex({ h: newH, s, l });
+  });
+}
+
+//SCHLOSS
+function lockToggler() {
+  locks.forEach((lock, index) => {
+    lock.addEventListener("click", () => {
+      const isClosed = lock.src.includes("schloss-close.svg");
+
+      if (isClosed) {
+        lock.src = "schloss-open.svg";
+        isLocked[index] = false;
+      } else {
+        lock.src = "schloss-close.svg";
+        isLocked[index] = true;
+
+        const openBeforeClose = isLocked.slice(0, index).includes(false);
+
+        if (!openBeforeClose) {
+          return;
+        }
+
+        let unlockedIndex = isLocked.findIndex((locked) => !locked);
+
+        if (unlockedIndex !== -1) {
+          let tempColor = colorInputs[unlockedIndex].value;
+          colorInputs[unlockedIndex].value = colorInputs[index].value;
+          colorInputs[index].value = tempColor;
+
+          let tempSrc = locks[unlockedIndex].src;
+          locks[unlockedIndex].src = locks[index].src;
+          locks[index].src = tempSrc;
+
+          let tempLocked = isLocked[unlockedIndex];
+          isLocked[unlockedIndex] = isLocked[index];
+          isLocked[index] = tempLocked;
+        }
+      }
+    });
   });
 }

@@ -41,6 +41,13 @@ h1 {
   font-weight: 400;
   font-style: normal;
   color: var(--middlegrey);
+  hyphens: auto;
+  transition: color 1s ease;
+  > span {
+    color: var(--darkgrey);
+    transition: color 1s ease;
+    hyphens: auto;
+  }
 }
 
 h2 {
@@ -113,13 +120,12 @@ header {
   display: flex;
   flex-direction: column;
   justify-content: center;
-  > h1 > span {
-    color: var(--darkgrey);
-  }
   > .button {
     margin-top: var(--m);
+    transition: background-color 1s ease, color 1s ease, box-shadow 1s ease;
   }
   cursor: default;
+  transition: background-color 1s ease;
 }
 
 .info {
@@ -194,6 +200,7 @@ header {
 }
 
 .color-box {
+  position: relative;
   display: flex;
   align-items: center;
   flex-direction: column;
@@ -218,6 +225,13 @@ input[type="color"]::-webkit-color-swatch-wrapper {
 
 input[type="color"]::-webkit-color-swatch {
   border: none;
+}
+
+.schloss-open {
+  position: absolute;
+  top: var(--s);
+  width: var(--m);
+  cursor: pointer;
 }
 
 .color-name {
@@ -264,6 +278,10 @@ footer {
   .color {
     height: 100px;
     max-width: 70%;
+  }
+
+  .schloss-open {
+    left: var(--s);
   }
 
   .color-box {
