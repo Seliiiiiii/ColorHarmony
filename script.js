@@ -128,8 +128,26 @@ document.addEventListener("keydown", (x) => {
 // AUSWAHL VON HARMONY
 harmonies.forEach((harmony) => {
   harmony.addEventListener("click", () => {
-    harmonies.forEach((item) => item.classList.remove("harmony-active"));
-    harmony.classList.add("harmony-active");
+    if (
+      harmony.classList.contains("complementary") ||
+      harmony.classList.contains("triadic") ||
+      harmony.classList.contains("tetradic") ||
+      harmony.classList.contains("monochromatic") ||
+      harmony.classList.contains("split-complementary") ||
+      harmony.classList.contains("analogous")
+    ) {
+      const falseCount = isLocked.filter((locked) => locked).length;
+      if (falseCount >= 2) {
+        harmonies.forEach((item) => item.classList.remove("harmony-active"));
+
+        alert("You can only lock one color at a time.");
+
+        return;
+      }
+      if (falseCount <= 1) {
+        harmony.classList.add("harmony-active");
+      }
+    }
 
     if (!colors.contains(box3)) colors.appendChild(box3);
     if (!colors.contains(box4)) colors.appendChild(box4);
