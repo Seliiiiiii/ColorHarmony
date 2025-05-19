@@ -90,7 +90,7 @@ a {
 }
 
 nav {
-  position: fixed;
+  padding-top: var(--m);
   z-index: 100;
   padding-inline: var(--m);
   margin-bottom: 0;
@@ -113,10 +113,9 @@ header {
   background-color: var(--lightgrey);
   margin-inline: var(--xl);
   margin-bottom: var(--xl);
-  margin-top: var(--m);
-  border-radius: 48px;
+  border-radius: 0 0 48px 48px;
   padding-inline: var(--m);
-  height: 80vh;
+  height: 65vh;
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -255,6 +254,21 @@ footer {
   > div {
     display: flex;
     gap: var(--l);
+  }
+}
+
+@media screen and (max-width: 2000px) {
+  h1 {
+    font-size: 48px;
+  }
+
+  h2 {
+    font-size: 24px;
+  }
+
+  p,
+  a {
+    font-size: 18px;
   }
 }
 
